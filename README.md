@@ -1,72 +1,232 @@
-# GeGraphs
+---
+title: "GeGraphs"
+output:
+  github_document:
+    toc: false
+    html_preview: false
+---
 
-**Gene-centric visualization and structural variant exploration**
+<!-- README.Rmd generates README.md. Edit README.Rmd, then knit/render it. -->
 
-GeGraphs is an R package developed to facilitate the visual inspection and exploration of structural variants (SVs) by combining **GENCODE gene annotations**, **BAM sequencing coverage**, and **SV calls from BED/VCF files** in one framework.
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  eval = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
 
-Developed during a Master's project in **Bioinformatics and Data Analysis in Biology at the University of Geneva (UNIGE)**.
+# GeGraphs 🧬
+
+[![R package](https://img.shields.io/badge/R-package-276DC3?logo=R&logoColor=white)](https://www.r-project.org/)
+[![Version](https://img.shields.io/badge/version-0.2.9-blue)](https://github.com/dea-ll/GeGraphs/releases/tag/v0.2.9)
+[![Status](https://img.shields.io/badge/status-development-orange)](https://github.com/dea-ll/GeGraphs)
+[![Release](https://img.shields.io/badge/release-v0.2.9-success)](https://github.com/dea-ll/GeGraphs/releases/tag/v0.2.9)
+
+**GeGraphs is an R package for gene-centric visualization and structural variant exploration.**
+
+It was developed to facilitate the visual inspection of structural variants (SVs) by combining **GENCODE gene annotations**, **BAM sequencing coverage**, and **SV calls from BED or VCF files** within a single framework.
+
+The package was developed during my Master's project in **Bioinformatics and Data Analysis in Biology (BIADB) at the University of Geneva (UNIGE)**.
 
 > **Version:** 0.2.9  
-> **Status:** research/development package. GeGraphs supports manual review and interpretation; it is not a standalone clinically validated diagnostic tool.
+> **Package type:** R package  
+> **Status:** research and development  
+> GeGraphs is intended to support SV exploration and manual review. It is not a standalone clinically validated diagnostic tool.
 
-## Main functions
+---
+
+## ✨ What does GeGraphs do?
+
+Structural variant interpretation often requires several types of information to be inspected separately. GeGraphs brings them together in one view:
+
+- 🧬 **GENCODE gene annotations**
+- 📈 **raw and normalized BAM coverage**
+- 🧩 **structural variant calls from BED or VCF files**
+- 👥 **optional control or family-member BAM files**
+- 🧪 **multiple SV callers displayed together**
+- 📋 **gene and panel-based SV exploration**
+
+```text
+                 GENCODE annotations
+                         │
+                         ▼
+BAM coverage ───────► GeGraphs ◄─────── BED / VCF
+                         │
+              ┌──────────┼──────────┐
+              ▼          ▼          ▼
+         plot_gene()  plot_region()  SV/gene exploration
+```
+
+GeGraphs is therefore designed as a **visualization and exploration layer following structural variant detection**.
+
+---
+
+## 🧰 Main functions
 
 | Function | Purpose |
 |---|---|
-| `plot_gene()` | Gene-centred visualization with coverage and SV tracks |
-| `plot_region()` | Visualization of a user-defined genomic interval |
+| `plot_gene()` | Visualize a selected gene together with coverage and structural variant tracks |
+| `plot_region()` | Visualize an arbitrary genomic interval |
 | `get_genes_under_sv()` | Identify genes overlapped by structural variants |
-| `get_gene_context()` | Explore genomic context around SVs |
-| `get_gene_context_for_gene()` | Retrieve neighbouring genes |
-| `panels_overlap_df()` | Intersect a gene panel with SV calls and optionally generate plots |
+| `get_gene_context()` | Explore genomic context around structural variants |
+| `get_gene_context_for_gene()` | Retrieve neighbouring genes around a selected gene |
+| `panels_overlap_df()` | Intersect a gene panel with SV calls and optionally generate gene-centred plots |
 
-## Example outputs
+---
 
-### Region / trio comparison
+## 🖼️ Example outputs
 
-![Region/trio example](docs/images/trio_example.png)
+### Region-based coverage comparison
 
-### SV caller comparison
+GeGraphs can compare normalized coverage between a sample of interest and additional controls or family members across a genomic region.
+
+![Region-based GeGraphs example](docs/images/trio_example.png)
+
+### Comparison of structural variant callers
+
+Several BED or VCF tracks can be displayed together, allowing calls from different algorithms to be compared directly with the coverage signal.
 
 ![SV caller comparison](docs/images/tools_example.png)
 
-> Example figures must be anonymised before publication.
+> Public figures should be anonymised and should not contain patient or sample identifiers.
 
-## Installation
+---
 
-From unpacked package source:
+## 📦 Installation
 
-```r
-devtools::install("/path/to/GeGraphs")
-library(GeGraphs)
-packageVersion("GeGraphs")
+GeGraphs is distributed as an **R source package**.
+
+### Download GeGraphs v0.2.9
+
+The packaged source archive is available from the GitHub Release page:
+
+👉 **[Download GeGraphs v0.2.9](https://github.com/dea-ll/GeGraphs/releases/tag/v0.2.9)**
+
+The release contains:
+
+```text
+GeGraphs_0.2.9.tar.gz
 ```
 
-From the packaged source archive:
+Install the R package from a terminal:
 
 ```bash
 R CMD INSTALL GeGraphs_0.2.9.tar.gz
 ```
 
-The development environment is provided in:
+Then load it in R:
+
+```r
+library(GeGraphs)
+packageVersion("GeGraphs")
+```
+
+Expected version:
+
+```text
+[1] '0.2.9'
+```
+
+If the unpacked package source is available locally, it can also be installed with:
+
+```r
+devtools::install("/path/to/GeGraphs")
+```
+
+---
+
+## ♻️ Reproducible environment
+
+The Conda environment used during development is provided in:
 
 ```text
 environment/dev_gegraphs_env.yml
 ```
 
-and can be recreated with:
+It can be recreated with:
 
 ```bash
 conda env create -f environment/dev_gegraphs_env.yml
 conda activate dev_gegraphs_env
 ```
 
-## Quick start
+The main R/Bioconductor dependencies include packages used for genomic ranges, BAM processing and genomic visualization, including:
+
+- `GenomicRanges`
+- `IRanges`
+- `Rsamtools`
+- `rtracklayer`
+- `Gviz`
+- `S4Vectors`
+
+---
+
+## 📂 Input data
+
+For a typical analysis, GeGraphs can use:
+
+```text
+sample.bam
+sample.bam.bai
+
+control_1.bam          # optional
+control_1.bam.bai
+
+control_2.bam          # optional
+control_2.bam.bai
+
+sample.delly.vcf       # optional
+sample.dysgu.vcf       # optional
+sample.cnvpytor.bed    # optional
+```
+
+The main visualization functions accept:
+
+- one BAM file for the sample of interest;
+- its corresponding BAM index;
+- optional BAM files for controls or family members;
+- optional BED or VCF files containing structural variant calls.
+
+BAM files must be indexed before use.
+
+---
+
+## 🔎 `plot_gene()`
+
+`plot_gene()` creates a multi-track visualization centred on a selected gene.
+
+A figure can contain:
+
+1. genomic coordinates;
+2. gene annotation;
+3. raw sequencing coverage;
+4. normalized coverage;
+5. one or more structural variant tracks.
+
+### Minimal example
 
 ```r
 library(GeGraphs)
 
 sample_bam <- "path/to/sample.bam"
+
+plot_gene(
+  gene = "ERGIC1",
+  bam_file = sample_bam,
+  genome = "hg19",
+  out = "ERGIC1_plot.pdf"
+)
+```
+
+### With controls and SV calls
+
+```r
+control_bams <- c(
+  Control_1 = "path/to/control_1.bam",
+  Control_2 = "path/to/control_2.bam"
+)
 
 sv_files <- list(
   Delly = "path/to/sample.delly.vcf",
@@ -76,6 +236,7 @@ sv_files <- list(
 plot_gene(
   gene = "ERGIC1",
   bam_file = sample_bam,
+  control_bams = control_bams,
   vcf_list = sv_files,
   genome = "hg19",
   flank = 5000,
@@ -83,69 +244,310 @@ plot_gene(
   show_cov = TRUE,
   show_sv = TRUE,
   bin_size = 2000,
-  out = "ERGIC1_review.pdf"
+  title = "ERGIC1 - coverage and structural variants",
+  out = "ERGIC1_full.pdf"
 )
 ```
 
-See [`examples/quickstart.R`](examples/quickstart.R) for a longer example.
+The names supplied in `control_bams`, `vcf_list` or `bed_list` are used as labels in the resulting figure.
 
-## Documentation
+---
 
-The complete tutorial is available here:
+## 🗺️ `plot_region()`
 
-[`docs/tutorial/GeGraphs_v0.2.9_Tutorial_FINAL_UNIGE.pdf`](docs/tutorial/GeGraphs_v0.2.9_Tutorial_FINAL_UNIGE.pdf)
+`plot_region()` uses the same visualization framework as `plot_gene()`, but the region is specified directly using genomic coordinates.
 
-It documents installation, inputs, `plot_gene()`, `plot_region()`, reading the output, coverage bin size, genes under SVs, panel overlap, troubleshooting and session information.
+This is useful when:
 
-## Repository structure
+- an SV extends beyond a single gene;
+- several neighbouring genes need to be inspected;
+- the region is intergenic;
+- a broader copy-number pattern needs to be visualized.
+
+```r
+plot_region(
+  chrom = "5",
+  start = 172260000,
+  end = 172360000,
+  bam_file = sample_bam,
+  control_bams = control_bams,
+  vcf_list = sv_files,
+  genome = "hg19",
+  show_cov = TRUE,
+  show_sv = TRUE,
+  bin_size = 5000,
+  title = "Chromosome 5 region",
+  out = "chr5_region.pdf"
+)
+```
+
+---
+
+## 📊 Coverage visualization
+
+GeGraphs displays both **raw** and **normalized** sequencing coverage.
+
+- **Raw coverage** represents local read depth across the selected locus.
+- **Normalized coverage** is summarized in genomic bins and facilitates comparison between the sample of interest and controls.
+
+The `bin_size` argument controls the resolution:
+
+- smaller bins provide finer local resolution;
+- larger bins smooth local variation and can be more appropriate for broad genomic regions.
+
+The most suitable value depends on the region size, sequencing depth and event being inspected.
+
+---
+
+## 🧬 Exploring genes affected by SVs
+
+### `get_genes_under_sv()`
+
+This function identifies genes whose genomic coordinates overlap structural variants contained in a BED or VCF file.
+
+```r
+genes_under <- get_genes_under_sv(
+  bed_file = "path/to/sample.filtered_DEL.bed",
+  genome = "hg19"
+)
+
+head(genes_under)
+```
+
+The resulting table can then be used for downstream exploration or exported for further analysis.
+
+---
+
+## 🧭 Exploring gene context
+
+Neighbouring genes can be explored using `get_gene_context()` or `get_gene_context_for_gene()`.
+
+```r
+context <- get_gene_context_for_gene(
+  gene = "ERGIC1",
+  genome = "hg19",
+  n_upstream = 2,
+  n_downstream = 2
+)
+
+context
+```
+
+This can be useful when an SV affects more than one gene or when neighbouring genes may also be relevant.
+
+---
+
+## 🧪 Panel-based SV analysis
+
+`panels_overlap_df()` intersects structural variant calls with a predefined gene panel.
+
+It can:
+
+- return panel genes overlapped by SVs;
+- optionally generate a `plot_gene()` figure for each overlapping gene.
+
+```r
+panel_df <- read.delim(
+  "path/to/gene_panel.tsv",
+  stringsAsFactors = FALSE
+)
+
+panel_hits <- panels_overlap_df(
+  paneldf = panel_df,
+  genecol = "GeneSymbol",
+  bedfile = "path/to/sample.filtered_DEL.bed",
+  vcffile = NULL,
+  svtype = "DEL",
+  genome = "hg19",
+  makeplots = FALSE
+)
+
+head(panel_hits)
+```
+
+Automatic plotting can be activated with:
+
+```r
+makeplots = TRUE
+```
+
+---
+
+## 📘 Documentation
+
+The complete tutorial for **GeGraphs v0.2.9** is available here:
+
+👉 **[GeGraphs v0.2.9 Tutorial](docs/tutorial/GeGraphs_v0.2.9_Tutorial.pdf)**
+
+It includes:
+
+- installation;
+- main dependencies;
+- input data;
+- `plot_gene()`;
+- `plot_region()`;
+- interpretation of GeGraphs outputs;
+- coverage bin-size selection;
+- genes affected by SVs;
+- gene-context exploration;
+- panel-based SV analysis;
+- a complete example workflow;
+- troubleshooting;
+- session information.
+
+---
+
+## 🗂️ Repository organization
 
 ```text
 GeGraphs/
+│
 ├── README.md
+├── README.Rmd
 ├── DESCRIPTION
 ├── NAMESPACE
-├── NEWS.md
-├── CITATION.cff
-├── .gitignore
+│
 ├── R/
+│   └── R package source files
+│
 ├── man/
-├── tests/
-├── vignettes/
-├── examples/
-│   └── quickstart.R
+│   └── R package documentation (.Rd)
+│
 ├── environment/
 │   └── dev_gegraphs_env.yml
+│
 ├── docs/
 │   ├── images/
 │   │   ├── trio_example.png
 │   │   └── tools_example.png
+│   │
 │   └── tutorial/
-│       └── GeGraphs_v0.2.9_Tutorial_FINAL_UNIGE.pdf
-├── inst/
-│   └── extdata/
-└── release/
-    └── README.md
+│       └── GeGraphs_v0.2.9_Tutorial.pdf
+│
+└── inst/
+    └── extdata/
 ```
 
-## Scope
+The `R/` and `man/` directories follow the standard organization of an **R package**:
 
-GeGraphs is intended for visualization, exploration and prioritization support. It does not call SVs, determine pathogenicity, replace orthogonal validation, or replace expert biological/clinical interpretation.
+- `R/` contains the package source functions;
+- `man/` contains the corresponding `.Rd` documentation;
+- `DESCRIPTION` stores package metadata and dependencies;
+- `NAMESPACE` defines exported functions and imports.
 
-## Confidentiality
+---
 
-Do not upload patient-derived BAM/VCF/BED/FASTQ data, sample identifiers, clinical information, institutional usernames/emails, credentials, or internal server paths such as `/scratch/...`, `/data/...` or `/home/...`.
+## 🔄 Typical workflow
 
-## Citation
+```text
+Structural variant detection
+             │
+             ▼
+         BED / VCF
+             │
+             ▼
+   Identify candidate region
+             │
+             ▼
+          GeGraphs
+             │
+       ┌─────┴─────┐
+       ▼           ▼
+   plot_gene()  plot_region()
+       │           │
+       └─────┬─────┘
+             ▼
+Coverage + annotations + SV tracks
+             │
+             ▼
+       Manual review
+```
 
-Llugiqi, D. (2026). *GeGraphs: Gene-Centric Genomic Visualization Tools*. R package version 0.2.9.
+---
 
-## Author
+## ✅ Good practices
+
+A few points are particularly important when using GeGraphs:
+
+- BAM files must have an associated index;
+- the selected genome build must match the input data;
+- `bin_size` should be adapted to the size of the inspected region;
+- very large BED or VCF files may benefit from preprocessing or region-based filtering;
+- non-standard contigs are removed when preparing genomic ranges;
+- MANE transcript information is prioritized when compatible with the available GENCODE annotation.
+
+---
+
+## ⚠️ Scope and limitations
+
+GeGraphs provides a compact framework for combining genomic annotation, sequencing coverage and structural variant calls.
+
+It can support:
+
+- gene-level inspection of candidate SVs;
+- comparison of coverage between a sample and controls;
+- visualization of calls from multiple SV callers;
+- exploration of genes within or around an SV;
+- intersection of SV calls with gene panels;
+- generation of targeted figures for manual review.
+
+The visualization is intended to **support interpretation**, not replace variant validation or clinical assessment.
+
+---
+
+## 🔒 Data confidentiality
+
+No patient-derived sequencing data are distributed with this repository.
+
+The repository should not contain:
+
+- patient BAM or CRAM files;
+- FASTQ files;
+- patient-derived BED or VCF files;
+- phenotype or clinical information;
+- patient/sample identifiers;
+- internal sample lists;
+- institutional usernames or email addresses;
+- internal server paths;
+- credentials or confidential resources.
+
+Only synthetic, public or explicitly cleared demonstration data should be placed in `inst/extdata/`.
+
+---
+
+## 🚀 Release
+
+The current packaged R source release is:
+
+### GeGraphs v0.2.9
+
+👉 **[GitHub Release — GeGraphs v0.2.9](https://github.com/dea-ll/GeGraphs/releases/tag/v0.2.9)**
+
+Download:
+
+```text
+GeGraphs_0.2.9.tar.gz
+```
+
+Install:
+
+```bash
+R CMD INSTALL GeGraphs_0.2.9.tar.gz
+```
+
+---
+
+## 📝 Citation
+
+If you use GeGraphs, please cite:
+
+> Llugiqi, D. (2026). *GeGraphs: Gene-Centric Genomic Visualization Tools*. R package version 0.2.9.
+
+---
+
+## 👩‍💻 Author
 
 **Dea Llugiqi**  
 Master in Bioinformatics and Data Analysis in Biology (BIADB)  
 University of Geneva (UNIGE)  
 2026
-
-## Licence
-
-No open-source licence is currently assigned. Ownership and redistribution conditions should be confirmed before public reuse.
