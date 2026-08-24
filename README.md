@@ -18,7 +18,7 @@ The package was developed during my Master's project in **Bioinformatics and Dat
 
 ---
 
-## Overview
+## ✨ Overview
 
 Structural variant interpretation often requires several types of information to be inspected separately. GeGraphs brings these sources together in a single visualization framework:
 
@@ -44,7 +44,7 @@ GeGraphs is designed as a **visualization and exploration layer following struct
 
 ---
 
-## Main functions
+## 🧰 Main functions
 
 | Function | Purpose |
 |---|---|
@@ -59,19 +59,17 @@ GeGraphs is designed as a **visualization and exploration layer following struct
 
 ## 🖼️ Example outputs
 
-### Region-based coverage comparison
+### Figure 1 – Example of a gene-centred visualization with `plot_gene()`
 
-GeGraphs can compare normalized coverage between a sample of interest and additional controls or family members across a genomic region.
+This example combines gene annotation, raw sequencing coverage, normalized coverage and structural variant information in a single gene-centred view.
 
-![Region-based GeGraphs example](docs/images/trio_example.png)
+![Gene-centred GeGraphs example](docs/images/trio_example.png)
 
-### Comparison of structural variant callers
+### Figure 2 – Example of structural variant caller comparison
 
-Several BED or VCF tracks can be displayed together, allowing calls from different algorithms to be compared directly with the coverage signal.
+This example displays structural variant tracks from multiple callers together with coverage information, allowing their predictions to be compared within the same genomic context.
 
 ![SV caller comparison](docs/images/tools_example.png)
-
-> Public figures should be anonymised and should not contain patient or sample identifiers.
 
 ---
 
@@ -81,7 +79,7 @@ GeGraphs is distributed as an **R source package**.
 
 ### Download GeGraphs v0.2.9
 
-The packaged source archive is available from the GitHub Release page:
+The complete packaged source archive is available from the GitHub Release page:
 
 👉 **[Download GeGraphs v0.2.9](https://github.com/dea-ll/GeGraphs/releases/tag/v0.2.9)**
 
@@ -91,13 +89,15 @@ The release contains:
 GeGraphs_0.2.9.tar.gz
 ```
 
-Install the package from a terminal with:
+This archive contains the complete R package, including its source code, documentation and the genomic annotation resources required by GeGraphs.
+
+Install it from a terminal with:
 
 ```bash
 R CMD INSTALL GeGraphs_0.2.9.tar.gz
 ```
 
-Then load it in R:
+Then load the package in R:
 
 ```r
 library(GeGraphs)
@@ -115,6 +115,44 @@ If the unpacked package source is available locally, it can also be installed wi
 ```r
 devtools::install("/path/to/GeGraphs")
 ```
+
+---
+
+## 🧬 Embedded genomic annotation resources
+
+The complete GeGraphs R package contains genomic annotation resources under:
+
+```text
+inst/extdata/
+```
+
+These include:
+
+```text
+gencode.v47.basic.annotation.gff3.gz
+gencode.v49lift37.basic.annotation.gff3.gz
+mane_select_minimal_with_hgnc.tsv
+```
+
+These resources support the gene annotation and transcript-selection components used by GeGraphs.
+
+Because the files are relatively large, they are **not duplicated directly in the visible GitHub repository**.
+
+They are included in the complete packaged source archive:
+
+👉 **[GeGraphs v0.2.9 Release](https://github.com/dea-ll/GeGraphs/releases/tag/v0.2.9)**
+
+Therefore, users installing:
+
+```text
+GeGraphs_0.2.9.tar.gz
+```
+
+receive the annotation resources together with the R package.
+
+Additional information is available in:
+
+[`inst/extdata/README.md`](inst/extdata/README.md)
 
 ---
 
@@ -230,8 +268,6 @@ plot_gene(
 )
 ```
 
-The names supplied in `control_bams`, `vcf_list` or `bed_list` are used as labels in the resulting figure.
-
 ---
 
 ## 🗺️ `plot_region()`
@@ -294,8 +330,6 @@ genes_under <- get_genes_under_sv(
 
 head(genes_under)
 ```
-
-The resulting table can then be used for downstream exploration or exported for further analysis.
 
 ---
 
@@ -406,15 +440,16 @@ GeGraphs/
 │
 └── inst/
     └── extdata/
+        └── README.md
 ```
 
-This follows the standard structure of an **R package**:
+This follows the standard organization of an **R package**:
 
 - `DESCRIPTION` contains package metadata and dependencies;
 - `NAMESPACE` defines exported functions and imports;
 - `R/` contains the package source code;
-- `man/` contains the `.Rd` documentation;
-- `inst/` contains files installed with the package;
+- `man/` contains the `.Rd` function documentation;
+- `inst/extdata/` contains package resources in the complete release;
 - `environment/` records the development software environment;
 - `docs/` contains user-facing documentation and example figures.
 
@@ -482,27 +517,17 @@ The visualization is intended to **support interpretation**, not replace variant
 
 No patient-derived sequencing data are distributed with this repository.
 
-The repository should not contain:
+The repository does not contain patient BAM/CRAM/FASTQ files, patient-derived SV files, clinical information, patient identifiers, credentials or internal infrastructure information.
 
-- patient BAM or CRAM files;
-- FASTQ files;
-- patient-derived BED or VCF files;
-- phenotype or clinical information;
-- patient/sample identifiers;
-- internal sample lists;
-- institutional usernames or email addresses;
-- internal server paths;
-- credentials or confidential resources.
-
-Only synthetic, public or explicitly cleared demonstration data should be placed in `inst/extdata/`.
+The GENCODE and MANE resources bundled with the complete R package are **reference annotation resources and are not patient-derived data**.
 
 ---
 
 ## 🚀 Release
 
-The current packaged R source release is:
-
 ### GeGraphs v0.2.9
+
+The complete packaged R source is available here:
 
 👉 **[GitHub Release — GeGraphs v0.2.9](https://github.com/dea-ll/GeGraphs/releases/tag/v0.2.9)**
 
@@ -512,7 +537,9 @@ Download:
 GeGraphs_0.2.9.tar.gz
 ```
 
-Install:
+The archive contains the complete GeGraphs R package, including the resources stored under `inst/extdata/`.
+
+Install with:
 
 ```bash
 R CMD INSTALL GeGraphs_0.2.9.tar.gz
