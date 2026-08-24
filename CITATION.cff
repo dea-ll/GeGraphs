@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use GeGraphs, please cite the software."
+title: "GeGraphs: Gene-Centric Genomic Visualization Tools"
+type: software
+authors:
+  - family-names: "Llugiqi"
+    given-names: "Dea"
+version: "0.2.9"
+date-released: "2026-08-24"
