@@ -18,7 +18,7 @@ The package was developed during my Master's project in **Bioinformatics and Dat
 
 ---
 
-## ✨ Overview
+## Overview
 
 Structural variant interpretation often requires several types of information to be inspected separately. GeGraphs brings these sources together in a single visualization framework:
 
@@ -44,7 +44,7 @@ GeGraphs is designed as a **visualization and exploration layer following struct
 
 ---
 
-## 🧰 Main functions
+## Main functions
 
 | Function | Purpose |
 |---|---|
