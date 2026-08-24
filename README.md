@@ -1,22 +1,3 @@
----
-title: "GeGraphs"
-output:
-  github_document:
-    toc: false
-    html_preview: false
----
-
-<!-- README.Rmd generates README.md. Edit README.Rmd, then knit/render it. -->
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(
-  echo = TRUE,
-  eval = FALSE,
-  message = FALSE,
-  warning = FALSE
-)
-```
-
 # GeGraphs 🧬
 
 [![R package](https://img.shields.io/badge/R-package-276DC3?logo=R&logoColor=white)](https://www.r-project.org/)
@@ -26,20 +7,20 @@ knitr::opts_chunk$set(
 
 **GeGraphs is an R package for gene-centric visualization and structural variant exploration.**
 
-It was developed to facilitate the visual inspection of structural variants (SVs) by combining **GENCODE gene annotations**, **BAM sequencing coverage**, and **SV calls from BED or VCF files** within a single framework.
+GeGraphs was developed to facilitate the visual inspection and exploration of structural variants (SVs) by combining **GENCODE gene annotations**, **BAM sequencing coverage**, and **SV calls from BED or VCF files** within a single framework.
 
 The package was developed during my Master's project in **Bioinformatics and Data Analysis in Biology (BIADB) at the University of Geneva (UNIGE)**.
 
 > **Version:** 0.2.9  
 > **Package type:** R package  
 > **Status:** research and development  
-> GeGraphs is intended to support SV exploration and manual review. It is not a standalone clinically validated diagnostic tool.
+> GeGraphs is intended to support structural variant exploration and manual review. It is not a standalone clinically validated diagnostic tool.
 
 ---
 
-## ✨ What does GeGraphs do?
+## ✨ Overview
 
-Structural variant interpretation often requires several types of information to be inspected separately. GeGraphs brings them together in one view:
+Structural variant interpretation often requires several types of information to be inspected separately. GeGraphs brings these sources together in a single visualization framework:
 
 - 🧬 **GENCODE gene annotations**
 - 📈 **raw and normalized BAM coverage**
@@ -59,7 +40,7 @@ BAM coverage ───────► GeGraphs ◄─────── BED / VC
          plot_gene()  plot_region()  SV/gene exploration
 ```
 
-GeGraphs is therefore designed as a **visualization and exploration layer following structural variant detection**.
+GeGraphs is designed as a **visualization and exploration layer following structural variant detection**.
 
 ---
 
@@ -110,7 +91,7 @@ The release contains:
 GeGraphs_0.2.9.tar.gz
 ```
 
-Install the R package from a terminal:
+Install the package from a terminal with:
 
 ```bash
 R CMD INSTALL GeGraphs_0.2.9.tar.gz
@@ -152,7 +133,7 @@ conda env create -f environment/dev_gegraphs_env.yml
 conda activate dev_gegraphs_env
 ```
 
-The main R/Bioconductor dependencies include packages used for genomic ranges, BAM processing and genomic visualization, including:
+The main R/Bioconductor dependencies include packages for genomic ranges, BAM processing and genomic visualization, such as:
 
 - `GenomicRanges`
 - `IRanges`
@@ -293,13 +274,13 @@ GeGraphs displays both **raw** and **normalized** sequencing coverage.
 The `bin_size` argument controls the resolution:
 
 - smaller bins provide finer local resolution;
-- larger bins smooth local variation and can be more appropriate for broad genomic regions.
+- larger bins smooth local variation and are useful for broad genomic regions.
 
 The most suitable value depends on the region size, sequencing depth and event being inspected.
 
 ---
 
-## 🧬 Exploring genes affected by SVs
+## 🧬 Exploring genes affected by structural variants
 
 ### `get_genes_under_sv()`
 
@@ -379,9 +360,9 @@ The complete tutorial for **GeGraphs v0.2.9** is available here:
 
 👉 **[GeGraphs v0.2.9 Tutorial](docs/tutorial/GeGraphs_v0.2.9_Tutorial.pdf)**
 
-It includes:
+The tutorial includes:
 
-- installation;
+- package installation;
 - main dependencies;
 - input data;
 - `plot_gene()`;
@@ -403,7 +384,6 @@ It includes:
 GeGraphs/
 │
 ├── README.md
-├── README.Rmd
 ├── DESCRIPTION
 ├── NAMESPACE
 │
@@ -428,12 +408,15 @@ GeGraphs/
     └── extdata/
 ```
 
-The `R/` and `man/` directories follow the standard organization of an **R package**:
+This follows the standard structure of an **R package**:
 
-- `R/` contains the package source functions;
-- `man/` contains the corresponding `.Rd` documentation;
-- `DESCRIPTION` stores package metadata and dependencies;
-- `NAMESPACE` defines exported functions and imports.
+- `DESCRIPTION` contains package metadata and dependencies;
+- `NAMESPACE` defines exported functions and imports;
+- `R/` contains the package source code;
+- `man/` contains the `.Rd` documentation;
+- `inst/` contains files installed with the package;
+- `environment/` records the development software environment;
+- `docs/` contains user-facing documentation and example figures.
 
 ---
 
@@ -467,7 +450,7 @@ Coverage + annotations + SV tracks
 
 ## ✅ Good practices
 
-A few points are particularly important when using GeGraphs:
+When using GeGraphs:
 
 - BAM files must have an associated index;
 - the selected genome build must match the input data;
