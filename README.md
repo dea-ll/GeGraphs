@@ -61,7 +61,7 @@ GeGraphs is designed as a **visualization and exploration layer following struct
 
 ### Figure 1 – Example of a gene-centred visualization with `plot_gene()`
 
-This example combines gene annotation, raw sequencing coverage, normalized coverage and structural variant information in a single gene-centred view.
+This example shows how GeGraphs can be used for trio analysis by displaying the normalized BAM coverage of the proband, mother and father in distinct colours. This facilitates direct comparison between family members and helps visually assess the segregation of a candidate structural variant.
 
 ![Gene-centred GeGraphs example](docs/images/trio_example.png)
 
